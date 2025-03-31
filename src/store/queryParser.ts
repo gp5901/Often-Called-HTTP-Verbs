@@ -7,7 +7,10 @@ import {
 import { mockDatabase } from "../utils/mockData";
 
 // Define TableRow type
-type TableRow = { [key: string]: string | number | boolean | null };
+type TableRow = { [key: string]: string | number | boolean | null | undefined };
+
+export const normalizeQuery = (query: string): string =>
+  query.replace(/;$/, "").trim().toLowerCase();
 
 export const executeQuery = async (query: string): Promise<TableRow[]> => {
   try {

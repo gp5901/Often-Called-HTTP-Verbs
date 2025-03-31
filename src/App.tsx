@@ -2,6 +2,7 @@
 import QueryEditor from "./components/QueryEditor";
 import QuerySelector from "./components/QuerySelector";
 import ResultTable from "./components/ResultTable";
+import { executeQuery } from "./utils/executeQuery";
 
 const App = () => {
   return (
@@ -15,3 +16,5 @@ const App = () => {
 };
 
 export default App;
+
+console.log(executeQuery("SELECT firstName, lastName FROM employees;"));
