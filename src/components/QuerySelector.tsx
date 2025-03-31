@@ -1,10 +1,14 @@
-import React from "react";
+// import React from "react";
 import { useQueryStore } from "../store/queryStore";
 
 const queries = [
-  "SELECT * FROM users;",
-  "SELECT name, age FROM employees WHERE age > 30;",
+  "SELECT * FROM customers;",
+  "SELECT firstName, lastName FROM employees WHERE age > 30;",
   "SELECT COUNT(*) FROM orders;",
+  "SELECT productName, unitPrice FROM products WHERE unitPrice > 50;",
+  "SELECT * FROM employees;",
+  "SELECT * FROM orders;",
+  "SELECT * FROM products;",
 ];
 
 const QuerySelector = () => {

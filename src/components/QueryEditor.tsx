@@ -1,35 +1,35 @@
-import React, { useState, useCallback } from "react";
+import { useState } from "react";
 import { useQueryStore } from "../store/queryStore";
 import { sql } from "@codemirror/lang-sql";
 import CodeMirror from "@uiw/react-codemirror";
-import { parse } from "pgsql-ast-parser";
-import { debounce } from "lodash";
+import { executeQuery } from "../utils/queryParser";
+import QueryResultTable from "./QueryResultTable"; // ✅ Ensure UI renders results
 
 const QueryEditor = () => {
   const { setQuery } = useQueryStore();
   const [query, setLocalQuery] = useState("");
-  const [error, setError] = useState("");
-
-  // Debounced query validation to avoid excessive re-renders
-  const validateQuery = useCallback(
-    debounce((value: string) => {
-      try {
-        parse(value); // Validate SQL
-        setError(""); // Clear error if valid
-      } catch (err) {
-        setError(
-          "SQL Syntax Error: " +
-            (err instanceof Error ? err.message : "Unknown error")
-        );
-      }
-    }, 300),
-    [debounce]
-  );
+  type TableRow = Record<string, string | number | boolean | null>; // Define TableRow type with specific types
+  const [queryResult, setQueryResult] = useState<TableRow[]>([]); // ✅ Store query results
 
   const handleQueryChange = (value: string) => {
     setLocalQuery(value);
-    setQuery(value);
-    validateQuery(value); // Call debounced validation
+    setQuery(value.trim()); // Prevent storing empty queries
+  };
+
+  const runQuery = async () => {
+    const trimmedQuery = query.trim();
+    if (!trimmedQuery) {
+      console.error("SQL Error: Query is empty.");
+      return;
+    }
+
+    try {
+      const result = await executeQuery(trimmedQuery); // ✅ Handle async updates
+      console.log("Query Result:", result);
+      setQueryResult(result); // ✅ Update UI with query results
+    } catch (error) {
+      console.error("SQL Execution Failed:", error);
+    }
   };
 
   return (
@@ -40,7 +40,10 @@ const QueryEditor = () => {
         onChange={handleQueryChange}
         theme="dark"
       />
-      {error && <p style={{ color: "red", marginTop: "5px" }}>{error}</p>}
+      <button onClick={runQuery}>Run Query</button>
+
+      {/* ✅ Render query results */}
+      <QueryResultTable data={queryResult} />
     </div>
   );
 };

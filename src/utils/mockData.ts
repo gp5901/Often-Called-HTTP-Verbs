@@ -1,65 +1,97 @@
-import { parse, FromTable } from "pgsql-ast-parser"; // PostgreSQL AST parser
+import customers from "../data/customers.json";
+import orders from "../data/orders.json";
+import employees from "../data/employees.json";
+import products from "../data/products.json";
 
-export const mockDatabase = {
-  users: [
-    { id: 1, name: "Alice", age: 25, role: "Admin" },
-    { id: 2, name: "Bob", age: 30, role: "User" },
-    { id: 3, name: "Charlie", age: 22, role: "User" },
-    { id: 4, name: "David", age: 35, role: "Admin" },
-  ],
-  employees: [
-    { id: 1, name: "Eve", salary: 50000, department: "HR" },
-    { id: 2, name: "Frank", salary: 70000, department: "Engineering" },
-  ],
-  orders: [
-    { id: 101, product: "Laptop", amount: 1200, status: "Shipped" },
-    { id: 102, product: "Phone", amount: 800, status: "Pending" },
-  ],
-  products: [
-    { id: 1, name: "Laptop", price: 1200, stock: 5 },
-    { id: 2, name: "Phone", price: 800, stock: 10 },
-  ],
+// Define a flexible row type to accommodate varying table structures
+type TableRow =
+  | { [key: string]: string | number | boolean | null } // General structure
+  | Partial<{
+      customerID: string;
+      companyName: string;
+      contactName: string;
+      contactTitle: string;
+      address: string;
+      city: string;
+      region: string;
+      postalCode: string;
+      country: string;
+      phone: string;
+      fax?: string;
+    }>
+  | {
+      employeeID: string;
+      lastName: string;
+      firstName: string;
+      title: string;
+      birthDate: string;
+      hireDate: string;
+      city: string;
+      country: string;
+      homePhone: string;
+      extension: number;
+      notes: string;
+      reportsTo?: number;
+    }
+  | {
+      orderID: number;
+      customerID: string;
+      employeeID: number;
+      orderDate: string;
+      requiredDate: string;
+      shippedDate?: string;
+      shipVia: number;
+      freight: number;
+      shipName: string;
+      shipAddress: string;
+      shipCity: string;
+      shipRegion?: string;
+      shipPostalCode?: string;
+      shipCountry: string;
+    }
+  | {
+      productID: number;
+      productName: string;
+      supplierID: number;
+      categoryID: number;
+      quantityPerUnit: string;
+      unitPrice: number;
+      unitsInStock: number;
+      unitsOnOrder: number;
+      reorderLevel: number;
+      discontinued: boolean;
+    };
+
+// Transform products once and reuse it
+const transformedProducts = products.map((product) => ({
+  ...product,
+  productID: Number(product.productID) || 0,
+  supplierID: Number(product.supplierID) || 0,
+  categoryID: Number(product.categoryID) || 0,
+  unitPrice: Number(product.unitPrice) || 0,
+  unitsInStock: Number(product.unitsInStock) || 0,
+  unitsOnOrder: Number(product.unitsOnOrder) || 0,
+  reorderLevel: Number(product.reorderLevel) || 0,
+  discontinued: Boolean(product.discontinued),
+  productName: String(product.productName || ""),
+  quantityPerUnit: String(product.quantityPerUnit || ""),
+}));
+
+export const mockDatabase: Record<string, TableRow[]> = {
+  customers,
+  orders,
+  employees,
+  products: transformedProducts,
 };
 
-export const mockQueries = [
-  "SELECT * FROM users;",
-  "SELECT name, age FROM users WHERE age > 30;",
-  "SELECT COUNT(*) FROM orders;",
-  "SELECT product, amount FROM orders WHERE status = 'Shipped';",
-  "SELECT name, stock FROM products WHERE stock > 5;",
-];
+// Normalize query keys to make lookups case-insensitive
+export const queryKey = (query: string) => query.toLowerCase().trim();
 
-// Define QueryResult as an array of valid SQL rows
-type QueryResult = Record<string, string | number | boolean>;
-
-export const mockQueryResults = (query: string): QueryResult[] => {
-  try {
-    const ast = parse(query);
-    if (!Array.isArray(ast) || ast.length === 0) return [];
-
-    const statement = ast[0];
-    if (statement.type !== "select") return [];
-
-    const table = (statement.from?.[0] as FromTable)?.name.name;
-    if (!table || !(table in mockDatabase)) return [];
-
-    const selectedColumns = statement.columns
-      ?.map((col) => (col.expr.type === "ref" ? col.expr.name : "*"))
-      .filter(Boolean) as string[];
-
-    const results = mockDatabase[table as keyof typeof mockDatabase];
-
-    if (!Array.isArray(results)) return [];
-
-    return selectedColumns.includes("*")
-      ? results
-      : results.map((row) =>
-          Object.fromEntries(
-            Object.entries(row).filter(([key]) => selectedColumns.includes(key))
-          )
-        );
-  } catch (err) {
-    console.error("SQL Parsing Error:", err);
-    return [];
-  }
+export const mockQueryResults: Record<string, TableRow[]> = {
+  "SELECT * FROM customers;": customers,
+  "SELECT * FROM orders;": orders,
+  "SELECT * FROM employees;": employees,
+  "SELECT * FROM products;": transformedProducts, // Reusing transformedProducts
 };
+
+console.log("Mock Data:", JSON.stringify(mockDatabase, null, 2));
