@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import QueryEditor from "./components/QueryEditor";
 import QuerySelector from "./components/QuerySelector";
 import ResultTable from "./components/ResultTable";
