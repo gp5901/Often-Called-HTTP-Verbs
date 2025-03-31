@@ -8,8 +8,15 @@ export const mockDatabase = {
     { id: 4, name: "David", age: 35, role: "Admin" },
   ],
   employees: [
-    { id: 1, name: "Eve", salary: 50000, department: "HR" },
-    { id: 2, name: "Frank", salary: 70000, department: "Engineering" },
+    { id: 1, name: "Nancy Davolio", salary: "N/A", department: "Sales" },
+    { id: 2, name: "Andrew Fuller", salary: "N/A", department: "Sales" },
+    { id: 3, name: "Janet Leverling", salary: "N/A", department: "Sales" },
+    { id: 4, name: "Margaret Peacock", salary: "N/A", department: "Sales" },
+    { id: 5, name: "Steven Buchanan", salary: "N/A", department: "Sales" },
+    { id: 6, name: "Michael Suyama", salary: "N/A", department: "Sales" },
+    { id: 7, name: "Robert King", salary: "N/A", department: "Sales" },
+    { id: 8, name: "Laura Callahan", salary: "N/A", department: "Sales" },
+    { id: 9, name: "Anne Dodsworth", salary: "N/A", department: "Sales" },
   ],
   orders: [
     { id: 101, product: "Laptop", amount: 1200, status: "Shipped" },
