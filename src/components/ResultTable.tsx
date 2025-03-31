@@ -1,4 +1,4 @@
-// import React from "react";
+import { useMemo } from "react";
 import { useQueryStore } from "../store/queryStore";
 import {
   useReactTable,
@@ -6,40 +6,40 @@ import {
   flexRender,
   ColumnDef,
 } from "@tanstack/react-table";
+import styles from "../styles/ResultTable.module.css";
 
 const ResultTable = () => {
   const { selectedQuery, resultData } = useQueryStore();
 
-  // Dynamically create columns based on result data keys
-  const columns: ColumnDef<(typeof resultData)[number]>[] =
-    resultData && resultData.length > 0
-      ? Object.keys(resultData[0]).map((key) => ({
-          accessorKey: key,
-          header: key.charAt(0).toUpperCase() + key.slice(1), // Capitalize column headers
-        }))
-      : [];
+  // Memoized columns for better performance
+  const columns: ColumnDef<(typeof resultData)[number]>[] = useMemo(() => {
+    if (!resultData || resultData.length === 0) return [];
+    return Object.keys(resultData[0]).map((key) => ({
+      accessorKey: key,
+      header: key.charAt(0).toUpperCase() + key.slice(1), // Capitalize column headers
+      cell: ({ getValue }) => getValue() || "—", // Default cell renderer
+    }));
+  }, [resultData]);
 
-  // React Table instance
+  // Memoized React Table instance
   const table = useReactTable({
     data: resultData || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
-  // Prevent trim() error by ensuring selectedQuery is always a string
-  if (!selectedQuery || selectedQuery.trim() === "") {
-    return <p>No query entered.</p>;
+  if (!selectedQuery?.trim()) {
+    return <p className={styles.noQuery}>No query entered.</p>;
   }
 
-  // Handle case where no results are found
   if (!resultData || resultData.length === 0) {
-    return <p>No data found for the query.</p>;
+    return <p className={styles.noData}>No data found for the query.</p>;
   }
 
   return (
-    <div>
+    <div className={styles.tableContainer}>
       <h2>Query Results</h2>
-      <table border={1}>
+      <table className={styles.resultTable}>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>

@@ -5,32 +5,38 @@ import CodeMirror from "@uiw/react-codemirror";
 import { parse } from "pgsql-ast-parser";
 import { debounce } from "lodash";
 
+const validateAndSetQuery = debounce(
+  (
+    query: string,
+    setError: (err: string) => void,
+    setQuery: (q: string) => void
+  ) => {
+    try {
+      parse(query); // Validate SQL
+      setError(""); // Clear error if valid
+    } catch (err) {
+      setError(
+        "SQL Syntax Error: " +
+          (err instanceof Error ? err.message : "Unknown error")
+      );
+    }
+    setQuery(query);
+  },
+  300
+);
+
 const QueryEditor = () => {
   const { setQuery } = useQueryStore();
   const [query, setLocalQuery] = useState("");
   const [error, setError] = useState("");
 
-  // Debounced query validation to avoid excessive re-renders
-  const validateQuery = useCallback(
-    debounce((value: string) => {
-      try {
-        parse(value); // Validate SQL
-        setError(""); // Clear error if valid
-      } catch (err) {
-        setError(
-          "SQL Syntax Error: " +
-            (err instanceof Error ? err.message : "Unknown error")
-        );
-      }
-    }, 300),
-    [debounce]
+  const handleQueryChange = useCallback(
+    (value: string) => {
+      setLocalQuery(value);
+      validateAndSetQuery(value, setError, setQuery);
+    },
+    [setQuery]
   );
-
-  const handleQueryChange = (value: string) => {
-    setLocalQuery(value);
-    setQuery(value);
-    validateQuery(value); // Call debounced validation
-  };
 
   return (
     <div>

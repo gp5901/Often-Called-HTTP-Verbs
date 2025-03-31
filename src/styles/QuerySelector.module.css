@@ -1,0 +1,17 @@
+.query-selector-container {
+  margin-bottom: 10px;
+}
+
+.query-label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.query-dropdown {
+  width: 100%;
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}

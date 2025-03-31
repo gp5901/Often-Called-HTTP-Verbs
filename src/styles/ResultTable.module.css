@@ -1,0 +1,27 @@
+.tableContainer {
+  margin-top: 10px;
+  overflow-x: auto; /* Allow horizontal scrolling */
+}
+
+.resultTable {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.resultTable th,
+.resultTable td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.resultTable th {
+  background-color: #f4f4f4;
+}
+
+.noQuery,
+.noData {
+  color: red;
+  font-weight: bold;
+}
