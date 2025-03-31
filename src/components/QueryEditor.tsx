@@ -26,7 +26,19 @@ const QueryEditor = () => {
     try {
       const result = await executeQuery(trimmedQuery); // ✅ Handle async updates
       console.log("Query Result:", result);
-      setQueryResult(result); // ✅ Update UI with query results
+
+      // ✅ Ensure all keys have valid values (no undefined)
+      const sanitizedResult = result.map(
+        (row: Record<string, unknown>) =>
+          Object.fromEntries(
+            Object.entries(row).map(([key, value]) => [
+              key,
+              value === undefined ? null : value, // ✅ Replace undefined with null
+            ])
+          ) as TableRow
+      );
+
+      setQueryResult(sanitizedResult as TableRow[]); // ✅ Update UI with clean data
     } catch (error) {
       console.error("SQL Execution Failed:", error);
     }
