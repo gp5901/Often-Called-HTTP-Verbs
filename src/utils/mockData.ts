@@ -2,8 +2,7 @@ import customers from "../data/customers.json";
 import orders from "../data/orders.json";
 import employees from "../data/employees.json";
 import products from "../data/products.json";
-
-type TableRow = Record<string, string | number | boolean | null | undefined>;
+import { TableRow } from "../types";
 
 const parseDate = (date: string | null | undefined): string | null => {
   if (!date) return null;

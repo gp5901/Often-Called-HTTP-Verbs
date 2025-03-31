@@ -5,9 +5,7 @@ import {
   SelectedColumn,
 } from "pgsql-ast-parser";
 import { mockDatabase } from "../utils/mockData";
-
-// Define TableRow type (must match mockDatabase)
-type TableRow = Record<string, string | number | boolean | null | undefined>;
+import { TableRow } from "../types";
 
 export const executeQuery = async (query: string): Promise<TableRow[]> => {
   try {
