@@ -1,42 +1,50 @@
 [
   {
-    "categoryID": "1",
+    "categoryID": 1,
     "categoryName": "Beverages",
-    "description": "Soft drinks, coffees, teas, beers, and ales"
+    "description": "Soft drinks, coffees, teas, beers, and ales",
+    "picture": "https://example.com/images/beverages.jpg"
   },
   {
-    "categoryID": "2",
+    "categoryID": 2,
     "categoryName": "Condiments",
-    "description": "Sweet and savory sauces, relishes, spreads, and seasonings"
+    "description": "Sweet and savory sauces, relishes, spreads, and seasonings",
+    "picture": "https://example.com/images/condiments.jpg"
   },
   {
-    "categoryID": "3",
+    "categoryID": 3,
     "categoryName": "Confections",
-    "description": "Desserts, candies, and sweet breads"
+    "description": "Desserts, candies, and sweet breads",
+    "picture": "https://example.com/images/confections.jpg"
   },
   {
-    "categoryID": "4",
+    "categoryID": 4,
     "categoryName": "Dairy Products",
-    "description": "Cheeses"
+    "description": "Cheeses",
+    "picture": "https://example.com/images/dairy.jpg"
   },
   {
-    "categoryID": "5",
+    "categoryID": 5,
     "categoryName": "Grains/Cereals",
-    "description": "Breads, crackers, pasta, and cereal"
+    "description": "Breads, crackers, pasta, and cereal",
+    "picture": "https://example.com/images/grains.jpg"
   },
   {
-    "categoryID": "6",
+    "categoryID": 6,
     "categoryName": "Meat/Poultry",
-    "description": "Prepared meats"
+    "description": "Prepared meats",
+    "picture": "https://example.com/images/meat.jpg"
   },
   {
-    "categoryID": "7",
+    "categoryID": 7,
     "categoryName": "Produce",
-    "description": "Dried fruit and bean curd"
+    "description": "Dried fruit and bean curd",
+    "picture": "https://example.com/images/produce.jpg"
   },
   {
-    "categoryID": "8",
+    "categoryID": 8,
     "categoryName": "Seafood",
-    "description": "Seaweed and fish"
+    "description": "Seaweed and fish",
+    "picture": "https://example.com/images/seafood.jpg"
   }
 ]
