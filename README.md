@@ -83,7 +83,7 @@ npm run dev
 
 ## **🎥 Video Walkthrough**
 
-📌 **[Link to Video Walkthrough]** – [Click Here]()
+📌 **[Link to Video Walkthrough]** – [Click Here](https://drive.google.com/file/d/1UGs5ug6fuIbnZ2ChkhMhE9vfg1b3UcPc/view?usp=sharing)
 
 ### Conclusion
 
