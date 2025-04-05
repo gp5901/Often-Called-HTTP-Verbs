@@ -17,7 +17,7 @@ const QueryEditor = () => {
   };
 
   const runQuery = async () => {
-    const trimmedQuery = query.trim();
+    const trimmedQuery = useQueryStore.getState().selectedQuery.trim();
     if (!trimmedQuery) {
       console.error("SQL Error: Query is empty.");
       return;
@@ -29,11 +29,11 @@ const QueryEditor = () => {
 
       // Ensure all keys have valid values (no undefined)
       const sanitizedResult = result.map(
-        (row: Record<string, unknown>) =>
+        (row) =>
           Object.fromEntries(
             Object.entries(row).map(([key, value]) => [
               key,
-              value === undefined ? null : value, // Replace undefined with null
+              value === undefined ? null : value,
             ])
           ) as TableRow
       );

@@ -6,9 +6,8 @@ import { TableRow } from "../types";
 
 const parseDate = (date: string | null | undefined): string | null => {
   if (!date) return null;
-  const parsedDate = new Date(date);
-  console.log("Parsing date:", date, "Parsed:", parsedDate);
-  return isNaN(parsedDate.getTime()) ? null : parsedDate.toISOString();
+  const parsed = new Date(date);
+  return isNaN(parsed.getTime()) ? null : parsed.toISOString();
 };
 
 const transformedEmployees: TableRow[] = employees.map(
@@ -51,37 +50,44 @@ export const mockDatabase: Record<string, TableRow[]> = {
   products: transformedProducts,
 };
 
-export const queryKey = (query: string) => query.toLowerCase().trim();
+export const queryKey = (query: string) =>
+  query.toLowerCase().trim().replace(/;$/, "");
 
 export const mockQueryResults: Record<string, TableRow[]> = {
-  "SELECT * FROM customers;": customers,
-  "SELECT * FROM employees;": transformedEmployees,
-  "SELECT * FROM orders;": transformedOrders,
-  "SELECT * FROM products;": transformedProducts,
-  "SELECT firstName, lastName FROM employees;": transformedEmployees.map(
+  "select * from customers": customers,
+  "select * from employees": transformedEmployees,
+  "select * from orders": transformedOrders,
+  "select * from products": transformedProducts,
+
+  "select firstname, lastname from employees": transformedEmployees.map(
     ({ firstName, lastName }) => ({ firstName, lastName })
   ),
-  "SELECT orderID, orderDate FROM orders;": transformedOrders.map(
+  "select orderid, orderdate from orders": transformedOrders.map(
     ({ orderID, orderDate }) => ({ orderID, orderDate })
   ),
-  "SELECT COUNT(*) FROM customers;": [{ count: customers.length }],
-  "SELECT COUNT(*) FROM employees;": [{ count: transformedEmployees.length }],
-  "SELECT COUNT(*) FROM orders;": [{ count: transformedOrders.length }],
-  "SELECT COUNT(*) FROM products;": [{ count: transformedProducts.length }],
-  "SELECT * FROM employees ORDER BY hireDate ASC;": transformedEmployees.sort(
-    (a, b) => {
-      const dateA =
-        a.hireDate && typeof a.hireDate === "string"
-          ? new Date(a.hireDate).getTime()
-          : 0;
-      const dateB =
-        b.hireDate && typeof b.hireDate === "string"
-          ? new Date(b.hireDate).getTime()
-          : 0;
-      return dateA - dateB;
-    }
-  ),
-  "SELECT * FROM orders ORDER BY orderDate DESC LIMIT 10;": transformedOrders
+
+  "select count(*) from customers": [{ count: customers.length }],
+  "select count(*) from employees": [{ count: transformedEmployees.length }],
+  "select count(*) from orders": [{ count: transformedOrders.length }],
+  "select count(*) from products": [{ count: transformedProducts.length }],
+
+  "select * from employees order by hiredate asc": [
+    ...transformedEmployees,
+  ].sort((a, b) => {
+    const dateA =
+      a.hireDate && typeof a.hireDate === "string"
+        ? new Date(a.hireDate).getTime()
+        : 0;
+    const dateB =
+      b.hireDate && typeof b.hireDate === "string"
+        ? new Date(b.hireDate).getTime()
+        : 0;
+    return dateA - dateB;
+  }),
+
+  "select * from orders order by orderdate desc limit 10": [
+    ...transformedOrders,
+  ]
     .sort((a, b) => {
       const dateA =
         a.orderDate && typeof a.orderDate === "string"
@@ -96,4 +102,6 @@ export const mockQueryResults: Record<string, TableRow[]> = {
     .slice(0, 10),
 };
 
+// ✅ Debug logs
 console.log("📦 Mock Database Loaded:", Object.keys(mockDatabase));
+console.log("📦 mockQueryResults Keys:", Object.keys(mockQueryResults));

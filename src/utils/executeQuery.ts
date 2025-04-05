@@ -4,7 +4,7 @@ import { mockDatabase } from "./mockData";
 type TableRow = { [key: string]: string | number | boolean | null };
 
 export const executeQuery = (query: string): TableRow[] => {
-  const normalizedQuery = query.trim().toLowerCase();
+  const normalizedQuery = query.trim().toLowerCase().replace(/;$/, ""); // Remove trailing semicolon
 
   // Extract table name
   const tableMatch = normalizedQuery.match(/from\s+(\w+)/);
