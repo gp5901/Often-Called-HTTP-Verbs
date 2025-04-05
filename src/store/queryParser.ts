@@ -5,7 +5,7 @@ import {
   SelectedColumn,
 } from "pgsql-ast-parser";
 import { mockDatabase } from "../utils/mockData";
-import { TableRow } from "../types";
+import { TableRow } from "../types"; // Define TableRow type with specific types
 
 export const executeQuery = async (query: string): Promise<TableRow[]> => {
   try {

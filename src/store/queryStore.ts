@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { mockQueryResults } from "../utils/mockData"; // ✅ Import correctly
+import { mockQueryResults } from "../utils/mockData";
 
 // Define the structure of a SQL query result row
 type QueryResult = Record<string, string | number | boolean>;
@@ -14,7 +14,7 @@ export const useQueryStore = create<QueryStore>((set) => ({
   selectedQuery: "",
   resultData: [],
   setQuery: (query) => {
-    const result = mockQueryResults[query] || []; // ✅ Use lookup instead of function call
+    const result = mockQueryResults[query] || []; // Use lookup instead of function call
 
     set({
       selectedQuery: query,

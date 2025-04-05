@@ -3,13 +3,13 @@ import { useQueryStore } from "../store/queryStore";
 import { sql } from "@codemirror/lang-sql";
 import CodeMirror from "@uiw/react-codemirror";
 import { executeQuery } from "../utils/queryParser";
-import QueryResultTable from "./QueryResultTable"; // ✅ Ensure UI renders results
+import QueryResultTable from "./QueryResultTable";
 
 const QueryEditor = () => {
   const { setQuery } = useQueryStore();
   const [query, setLocalQuery] = useState("");
   type TableRow = Record<string, string | number | boolean | null>; // Define TableRow type with specific types
-  const [queryResult, setQueryResult] = useState<TableRow[]>([]); // ✅ Store query results
+  const [queryResult, setQueryResult] = useState<TableRow[]>([]); // Store query results
 
   const handleQueryChange = (value: string) => {
     setLocalQuery(value);
@@ -24,21 +24,21 @@ const QueryEditor = () => {
     }
 
     try {
-      const result = await executeQuery(trimmedQuery); // ✅ Handle async updates
+      const result = await executeQuery(trimmedQuery); // Handle async updates
       console.log("Query Result:", result);
 
-      // ✅ Ensure all keys have valid values (no undefined)
+      // Ensure all keys have valid values (no undefined)
       const sanitizedResult = result.map(
         (row: Record<string, unknown>) =>
           Object.fromEntries(
             Object.entries(row).map(([key, value]) => [
               key,
-              value === undefined ? null : value, // ✅ Replace undefined with null
+              value === undefined ? null : value, // Replace undefined with null
             ])
           ) as TableRow
       );
 
-      setQueryResult(sanitizedResult as TableRow[]); // ✅ Update UI with clean data
+      setQueryResult(sanitizedResult as TableRow[]); // Update UI with clean data
     } catch (error) {
       console.error("SQL Execution Failed:", error);
     }
@@ -54,7 +54,7 @@ const QueryEditor = () => {
       />
       <button onClick={runQuery}>Run Query</button>
 
-      {/* ✅ Render query results */}
+      {/* Render query results */}
       <QueryResultTable data={queryResult} />
     </div>
   );
