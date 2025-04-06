@@ -4,7 +4,7 @@ import { sql } from "@codemirror/lang-sql";
 import CodeMirror from "@uiw/react-codemirror";
 import { executeQuery } from "../utils/queryParser";
 import QueryResultTable from "./QueryResultTable";
-import styles from "../styles/QueryEditor.module.css"; // ✅ import as module
+import styles from "../styles/QueryEditor.module.css";
 
 const QueryEditor = () => {
   const { setQuery, selectedQuery } = useQueryStore();
