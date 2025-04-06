@@ -11,6 +11,17 @@ const parseDate = (date: string | null | undefined): string | null => {
   return isNaN(parsed.getTime()) ? null : parsed.toISOString();
 };
 
+const transformedCustomers: TableRow[] = customers.map((customer) => {
+  const normalized = toLowerCaseKeys(customer);
+  return {
+    ...normalized,
+    customerID: String(normalized.customerid || ""),
+    companyName: String(normalized.companyname || ""),
+    contactName: String(normalized.contactname || ""),
+    country: String(normalized.country || ""),
+  } as TableRow;
+});
+
 const transformedEmployees: TableRow[] = employees.map(
   ({ birthDate, hireDate, ...rest }) => ({
     ...rest,
@@ -78,7 +89,7 @@ const transformedCategories: TableRow[] = categories.map((cat) => ({
 }));
 
 export const mockDatabase: Record<string, TableRow[]> = {
-  customers,
+  customers: transformedCustomers,
   employees: transformedEmployees,
   orders: transformedOrders,
   products: transformedProducts,
