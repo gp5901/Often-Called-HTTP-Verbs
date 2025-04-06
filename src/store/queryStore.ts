@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { mockQueryResults } from "../utils/mockData";
+import { normalizeQuery } from "../utils/queryNormalizer"; // External utility for query normalization
 
-// Define the structure of a SQL query result row
 type QueryResult = Record<string, string | number | boolean | null>;
 
 type QueryStore = {
@@ -10,20 +10,20 @@ type QueryStore = {
   setQuery: (query: string) => void;
 };
 
-// ✅ Utility: Normalize query string to match mock keys
-const normalizeQuery = (query: string): string =>
-  query.toLowerCase().replace(/\s+/g, " ").replace(/;$/, "").trim();
-
 export const useQueryStore = create<QueryStore>((set) => ({
   selectedQuery: "",
   resultData: [],
   setQuery: (query) => {
-    const normalizedQuery = normalizeQuery(query);
-    const result = mockQueryResults[normalizedQuery] || [];
+    const normalized = normalizeQuery(query);
+    const result = mockQueryResults[normalized] || [];
+
+    // Debug logs
+    console.log("📥 Final query sent:", normalized);
+    console.log("✅ Matched Result:", result);
 
     // Log fallback
-    if (!mockQueryResults[normalizedQuery]) {
-      console.warn("🛑 No mock result found for:", normalizedQuery);
+    if (!mockQueryResults[normalized]) {
+      console.warn("🛑 No mock result found for:", normalized);
     }
 
     set({

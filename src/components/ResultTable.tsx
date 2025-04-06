@@ -7,7 +7,7 @@ const ResultTable = () => {
   if (!resultData || resultData.length === 0) return <p>No results</p>;
 
   // Dynamically infer column headers from the first row
-  const headers = Object.keys(resultData[0]);
+  const headers = Object.keys(resultData[0] || {});
 
   return (
     <table border={1}>

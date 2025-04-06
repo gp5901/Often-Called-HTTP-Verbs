@@ -18,16 +18,19 @@ const QueryEditor = () => {
 
   const runQuery = async () => {
     const trimmedQuery = useQueryStore.getState().selectedQuery.trim();
+
     if (!trimmedQuery) {
-      console.error("SQL Error: Query is empty.");
+      console.error("❌ SQL Error: Query is empty.");
       return;
     }
 
+    console.log("📥 Final query sent:", trimmedQuery); // Log the input query
+
     try {
       const result = await executeQuery(trimmedQuery); // Handle async updates
-      console.log("Query Result:", result);
 
-      // Ensure all keys have valid values (no undefined)
+      console.log("✅ Matched Result:", result); // Log raw result before sanitizing
+
       const sanitizedResult = result.map(
         (row) =>
           Object.fromEntries(
@@ -38,9 +41,9 @@ const QueryEditor = () => {
           ) as TableRow
       );
 
-      setQueryResult(sanitizedResult as TableRow[]); // Update UI with clean data
+      setQueryResult(sanitizedResult); // Update UI with clean data
     } catch (error) {
-      console.error("SQL Execution Failed:", error);
+      console.error("❌ SQL Execution Failed:", error);
     }
   };
 
