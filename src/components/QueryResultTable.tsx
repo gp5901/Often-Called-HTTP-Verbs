@@ -1,6 +1,5 @@
-import "../styles/QueryResultTable.css";
+import styles from "../styles/QueryResultTable.module.css";
 
-// Define the TableRow type
 type TableRow = { [key: string]: string | number | boolean | null };
 
 const QueryResultTable = ({ data }: { data: TableRow[] }) => {
@@ -8,7 +7,7 @@ const QueryResultTable = ({ data }: { data: TableRow[] }) => {
   if (!data.length) return <p>No results found.</p>;
 
   return (
-    <table className="query-table">
+    <table className={styles.queryTable}>
       <thead>
         <tr>
           {Object.keys(data[0]).map((key) => (

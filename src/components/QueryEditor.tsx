@@ -4,6 +4,7 @@ import { sql } from "@codemirror/lang-sql";
 import CodeMirror from "@uiw/react-codemirror";
 import { executeQuery } from "../utils/queryParser";
 import QueryResultTable from "./QueryResultTable";
+import styles from "../styles/QueryEditor.module.css"; // ✅ import as module
 
 const QueryEditor = () => {
   const { setQuery, selectedQuery } = useQueryStore();
@@ -16,42 +17,30 @@ const QueryEditor = () => {
     setQuery(value.trim());
   };
 
-  // ✅ Memoize runQuery to avoid ESLint warning and infinite reruns
   const runQuery = useCallback(
     async (incomingQuery?: string) => {
       const trimmedQuery = (incomingQuery || selectedQuery).trim();
-
-      if (!trimmedQuery) {
-        console.error("❌ SQL Error: Query is empty.");
-        return;
-      }
-
-      console.log("📥 Final query sent:", trimmedQuery);
+      if (!trimmedQuery) return console.error("❌ SQL Error: Query is empty.");
 
       try {
         const result = await executeQuery(trimmedQuery);
-
-        console.log("✅ Matched Result:", result);
-
-        const sanitizedResult = result.map(
-          (row) =>
-            Object.fromEntries(
-              Object.entries(row).map(([key, value]) => [
-                key,
-                value === undefined ? null : value,
-              ])
-            ) as TableRow
-        );
+        const sanitizedResult = result.map((row) =>
+          Object.fromEntries(
+            Object.entries(row).map(([key, value]) => [
+              key,
+              value === undefined ? null : value,
+            ])
+          )
+        ) as TableRow[];
 
         setQueryResult(sanitizedResult);
       } catch (error) {
         console.error("❌ SQL Execution Failed:", error);
       }
     },
-    [selectedQuery] // only depends on this
+    [selectedQuery]
   );
 
-  // 🛠️ Fix: add `runQuery` safely now
   useEffect(() => {
     if (selectedQuery) {
       setLocalQuery(selectedQuery);
@@ -60,14 +49,18 @@ const QueryEditor = () => {
   }, [selectedQuery, runQuery]);
 
   return (
-    <div>
+    <div className={styles.container}>
+      {" "}
+      {/* ✅ scoped class */}
       <CodeMirror
         value={query}
         extensions={[sql()]}
         onChange={handleQueryChange}
         theme="dark"
       />
-      <button onClick={() => runQuery()}>Run Query</button>
+      <button className={styles.runButton} onClick={() => runQuery()}>
+        Run Query
+      </button>
       <QueryResultTable data={queryResult} />
     </div>
   );

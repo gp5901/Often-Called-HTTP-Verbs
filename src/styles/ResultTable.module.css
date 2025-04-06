@@ -1,0 +1,54 @@
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 2rem;
+}
+
+.resultTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #f1f1f1;
+  background-color: #1f1f2e;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.resultTable thead {
+  background-color: #2b2b40;
+}
+
+.resultTable th,
+.resultTable td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #333;
+  max-width: 240px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.resultTable th {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.resultTable tbody tr:nth-child(even) {
+  background-color: #26263a;
+}
+
+.resultTable tbody tr:hover {
+  background-color: #33334d;
+  transition: background-color 0.2s ease;
+}
+
+.emptyMessage {
+  margin-top: 2rem;
+  font-style: italic;
+  color: #bbb;
+  text-align: center;
+}

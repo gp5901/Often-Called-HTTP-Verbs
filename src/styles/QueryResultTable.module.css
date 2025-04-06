@@ -1,0 +1,29 @@
+.queryTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-family: monospace;
+  font-size: 0.9rem;
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+}
+
+.queryTable th,
+.queryTable td {
+  border: 1px solid #444;
+  padding: 0.6rem 1rem;
+  text-align: left;
+}
+
+.queryTable th {
+  background-color: #282c34;
+  font-weight: bold;
+}
+
+.queryTable tr:nth-child(even) {
+  background-color: #2c2f36;
+}
+
+.queryTable tr:hover {
+  background-color: #3a3f4b;
+}

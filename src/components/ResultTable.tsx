@@ -1,4 +1,5 @@
 import { useQueryStore } from "../store/queryStore";
+import styles from "../styles/ResultTable.module.css";
 
 const ResultTable = () => {
   const { resultData } = useQueryStore();
@@ -10,28 +11,30 @@ const ResultTable = () => {
   const headers = Object.keys(resultData[0] || {});
 
   return (
-    <table border={1}>
-      <thead>
-        <tr>
-          {headers.map((col) => (
-            <th key={col}>{col}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {resultData.map((row, index) => (
-          <tr key={index}>
+    <div className={styles.tableWrapper}>
+      <table className={styles.resultTable}>
+        <thead>
+          <tr>
             {headers.map((col) => (
-              <td key={col}>
-                {row[col] !== null && row[col] !== undefined
-                  ? String(row[col])
-                  : "—"}
-              </td>
+              <th key={col}>{col}</th>
             ))}
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {resultData.map((row, index) => (
+            <tr key={index}>
+              {headers.map((col) => (
+                <td key={col}>
+                  {row[col] !== null && row[col] !== undefined
+                    ? String(row[col])
+                    : "—"}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
 
